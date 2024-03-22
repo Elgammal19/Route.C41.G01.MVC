@@ -1,9 +1,12 @@
-using Microsoft.AspNetCore.Builder;
+ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Route.C41.G02.DAL.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +23,24 @@ namespace Route.C41.G02.MVC03.PL
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the DI container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews();// Register built-in services reqiured by MVC
+
+            // CLR will create an object from "ApplicationDbContext" each time user need this object at the same request
+            //services.AddTransient<ApplicationDbContext>();
+
+            // CLR will create an object from "ApplicationDbContext" & store it in heap as long as user is still in the same request 
+            //services.AddScoped<ApplicationDbContext>();
+            //services.AddScoped<DbContextOptions<ApplicationDbContext>>();
+            services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
+            {
+                optionsBuilder.UseSqlServer("Server = . ; Database = MVCApplicationG02 ; Trusted_Connection = True ; TrustServerCertificate = True ");
+            });
+
+            // CLR will craete an object from 'ApplicationDbContext' and store this object in heap as long as user open a session with server
+            //services.AddSingleton<ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
