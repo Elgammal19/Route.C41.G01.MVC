@@ -5,6 +5,7 @@ using Route.C41.G02.BLL.Interfaces;
 using Route.C41.G02.BLL.Repositories;
 using Route.C41.G02.DAL.Models;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Route.C41.G02.MVC03.PL.Controllers
 {
@@ -101,6 +102,19 @@ namespace Route.C41.G02.MVC03.PL.Controllers
                 }
                 return View(department);
             }
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            
+            return Details(id, "Delete");
+        }
+        [HttpPost]
+        public IActionResult Delete(Department department)
+        {
+            _departmentRepo.Delete(department);
+            return RedirectToAction("Index");
         }
     }
 }
