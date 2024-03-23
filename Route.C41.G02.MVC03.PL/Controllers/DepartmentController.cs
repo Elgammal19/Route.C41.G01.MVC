@@ -40,5 +40,17 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             return View(department);
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (!id.HasValue)
+                return BadRequest(); // 400
+
+            var dept = _departmentRepo.Get(id.Value);
+
+            if (dept is null)
+                return NotFound();  // 404 
+
+            return View(dept);
+        }
     }
 }
