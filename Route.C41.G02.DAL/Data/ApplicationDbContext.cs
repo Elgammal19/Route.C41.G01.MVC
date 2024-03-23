@@ -12,6 +12,7 @@ namespace Route.C41.G02.DAL.Data
 {
     public class ApplicationDbContext :DbContext
     {
+        // constructor injection
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
 
