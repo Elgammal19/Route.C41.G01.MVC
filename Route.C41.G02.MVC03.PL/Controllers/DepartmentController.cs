@@ -73,6 +73,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]  // Action Fitler - AntiForgeryToken
         public IActionResult Edit([FromRoute]int id,Department department)
         {
             if(id != department.Id)
