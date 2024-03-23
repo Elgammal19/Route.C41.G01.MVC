@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G02.BLL.Interfaces
 {
-    internal interface IDepartmentRepository
+    public interface IDepartmentRepository
     {
         // IEnumerable to use any collection that implement this interface to iterate on collection to dispaly records in table
         IEnumerable<Department> GetAll();

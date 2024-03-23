@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Route.C41.G02.BLL.Interfaces;
+using Route.C41.G02.BLL.Repositories;
 using Route.C41.G02.DAL.Data;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,8 @@ namespace Route.C41.G02.MVC03.PL
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
             // CLR will craete an object from 'ApplicationDbContext' and store this object in heap as long as user open a session with server
             //services.AddSingleton<ApplicationDbContext>();

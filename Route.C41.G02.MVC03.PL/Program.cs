@@ -13,7 +13,8 @@ namespace Route.C41.G02.MVC03.PL
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var HostBuilder = CreateHostBuilder(args).Build();
+            HostBuilder.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
