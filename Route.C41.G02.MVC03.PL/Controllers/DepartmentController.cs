@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Route.C41.G02.BLL.Interfaces;
 using Route.C41.G02.BLL.Repositories;
 using Route.C41.G02.DAL.Models;
+using System;
 
 namespace Route.C41.G02.MVC03.PL.Controllers
 {
@@ -10,10 +13,12 @@ namespace Route.C41.G02.MVC03.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepository _departmentRepo;
+        private readonly IWebHostEnvironment _env;
 
-        public DepartmentController(IDepartmentRepository departmentRepo)
+        public DepartmentController(IDepartmentRepository departmentRepo , IWebHostEnvironment env)
         {
             _departmentRepo = departmentRepo;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -40,7 +45,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             return View(department);
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id ,string ViewName = "Details")
         {
             if (!id.HasValue)
                 return BadRequest(); // 400
@@ -50,7 +55,51 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             if (dept is null)
                 return NotFound();  // 404 
 
-            return View(dept);
+            return View(ViewName , dept);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            //if (!id.HasValue)
+            //    return BadRequest(); // 400
+
+            //var dept = _departmentRepo.Get(id.Value);
+
+            //if (dept is null)
+            //    return NotFound();  // 404 
+
+            return Details(id , "Edit");
+        }
+
+        [HttpPost]
+        public IActionResult Edit([FromRoute]int id,Department department)
+        {
+            if(id != department.Id)
+                return BadRequest(); //400
+            if (!ModelState.IsValid)
+                return View(department);
+
+            try
+            {
+                _departmentRepo.Update(department);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception ex)
+            {
+                // Log Exeption
+                // Friendly Message
+                if (_env.IsDevelopment())
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "An Error Has Occured During Updating Department");
+                }
+                return View(department);
+            }
         }
     }
 }
