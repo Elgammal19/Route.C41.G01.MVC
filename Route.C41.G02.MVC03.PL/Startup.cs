@@ -37,9 +37,9 @@ namespace Route.C41.G02.MVC03.PL
             //services.AddScoped<DbContextOptions<ApplicationDbContext>>();
 
             // This CoonnectionString is n't valid --> 1. Plain Text   2. Because CoonnectionString is changing from enviroment to another
-            services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             // CLR will craete an object from 'ApplicationDbContext' and store this object in heap as long as user open a session with server

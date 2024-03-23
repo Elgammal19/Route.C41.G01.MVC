@@ -12,7 +12,7 @@ namespace Route.C41.G02.DAL.Data
 {
     public class ApplicationDbContext :DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
         {
 
         }
