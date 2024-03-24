@@ -40,7 +40,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             if(ModelState.IsValid) // Server side validation
             {
                 var count = _departmentRepo.Add(department);
-                if(count > 0) 
+                if(count > 0)  
                     return RedirectToAction("Index");
             }
             return View(department);
