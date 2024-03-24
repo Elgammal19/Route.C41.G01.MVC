@@ -45,6 +45,7 @@ namespace Route.C41.G02.MVC03.PL
             });
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             // CLR will craete an object from 'ApplicationDbContext' and store this object in heap as long as user open a session with server
             //services.AddSingleton<ApplicationDbContext>();

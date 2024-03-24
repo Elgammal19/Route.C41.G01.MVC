@@ -32,8 +32,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Craete(Employee employee)
-        {
+        public IActionResult Create(Employee employee)
+        { 
             if (ModelState.IsValid)
             {
                 var count = _empRepo.Add(employee);
