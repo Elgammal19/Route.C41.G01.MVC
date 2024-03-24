@@ -10,49 +10,56 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G02.BLL.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : GenericRepository<Department>,  IDepartmentRepository
     {
-        private readonly ApplicationDbContext _dbContext;
+        //private readonly ApplicationDbContext _dbContext;
 
-        public DepartmentRepository(ApplicationDbContext dbContext) // Ask CLR to creating an object from "ApplicationDbContext" 
+        public DepartmentRepository(ApplicationDbContext dbContext):base(dbContext)
         {
-            _dbContext = dbContext;
+            //_dbContext = dbContext;
         }
 
-        public int Add(Department record)
-        {
-            _dbContext.Departments.Add(record);
-            return _dbContext.SaveChanges();
-        }
+        //private readonly ApplicationDbContext _dbContext;
 
-        public int Update(Department record)
-        {
-            _dbContext.Departments.Update(record);
-            return _dbContext.SaveChanges();
-        }
+        //public DepartmentRepository(ApplicationDbContext dbContext) // Ask CLR to creating an object from "ApplicationDbContext" 
+        //{
+        //    _dbContext = dbContext;
+        //}
 
-        public int Delete(Department record)
-        {
-            _dbContext.Departments.Remove(record);
-            return _dbContext.SaveChanges();
-        }
+        //public int Add(Department record)
+        //{
+        //    _dbContext.Departments.Add(record);
+        //    return _dbContext.SaveChanges();
+        //}
 
-        public Department Get(int id)
-        {
-            //var department = _dbContext.Departments.Local.Where(D =>D.Id == id).FirstOrDefault();   
+        //public int Update(Department record)
+        //{
+        //    _dbContext.Departments.Update(record);
+        //    return _dbContext.SaveChanges();
+        //}
 
-            //if(department == null)
-            //    department = _dbContext.Departments.Where(D => D.Id == id).FirstOrDefault();
+        //public int Delete(Department record)
+        //{
+        //    _dbContext.Departments.Remove(record);
+        //    return _dbContext.SaveChanges();
+        //}
 
-            //return department;
+        //public Department Get(int id)
+        //{
+        //    //var department = _dbContext.Departments.Local.Where(D =>D.Id == id).FirstOrDefault();   
 
-            return _dbContext.Departments.Find(id);
-        }
+        //    //if(department == null)
+        //    //    department = _dbContext.Departments.Where(D => D.Id == id).FirstOrDefault();
 
-        public IEnumerable<Department> GetAll()
-        {
-            return _dbContext.Departments.AsNoTracking().ToList();
-        }
+        //    //return department;
+
+        //    return _dbContext.Departments.Find(id);
+        //}
+
+        //public IEnumerable<Department> GetAll()
+        //{
+        //    return _dbContext.Departments.AsNoTracking().ToList();
+        //}
 
     }
 }

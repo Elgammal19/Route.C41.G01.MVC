@@ -7,20 +7,8 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G02.BLL.Interfaces
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeRepository :IGenericRepository<Employee>
     {
-        // IEnumerable to use any collection that implement this interface to iterate on collection to dispaly records in table
-        IEnumerable<Employee> GetAll();
-
-        Employee Get(int id);
-
-        // Retrun type "int" to know the number of records that affected in DB
-        int Add(Employee record);
-
-        // Retrun type "int" to know the number of records that updated in DB
-        int Update(Employee record);
-
-        // Retrun type "int" to know the number of records that deleted from DB
-        int Delete(Employee record);
+        IQueryable<Employee> GetEmployeesByAddress(string address);
     }
 }

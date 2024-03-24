@@ -26,10 +26,10 @@ namespace Route.C41.G02.DAL.Models
         PartTime = 2
     }
 
-    public class Employee
+    public class Employee : ModelBase
     {
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
