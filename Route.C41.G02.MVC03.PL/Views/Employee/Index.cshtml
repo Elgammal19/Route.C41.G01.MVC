@@ -7,14 +7,21 @@
     string ViewBagMessage = ViewBag.Message; //Can't Enforce Type Safety --> N't Required Type Conversion[Weekly Typed] 
 
 }
+@if (string.IsNullOrEmpty(TempData["Message"] as string))
+{
+    <div class="alert alert-primary">
+        @TempData["Message"]
+    </div>
+}
 
-<div class="alert alert-warning">
+
+@*<div class="alert alert-warning">
     @ViewData["Message"]
 </div>
 
 <div class ="alert alert-success">
     @ViewBag.Message
-</div>
+</div>*@
 
 <h1>All Departements</h1>
 <br />

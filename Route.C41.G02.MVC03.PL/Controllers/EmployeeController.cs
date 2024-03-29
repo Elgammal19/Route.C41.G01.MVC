@@ -47,11 +47,15 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         { 
             if (ModelState.IsValid)
             {
+                // 3. TempData --> Dictionary Type
+                // To Transfer Data Between 2 Consecutive Requestrs
                 var count = _empRepo.Add(employee);
                 if(count > 0)
-                {
-                    return RedirectToAction("Index");
-                }
+                     TempData["Message"] = "Department Is Created Successfully"; 
+                else
+                    TempData["Message"] = "An Error Has Occured , Department Is n't Created ";
+                return RedirectToAction("Index");
+
             }
                 return View(employee);
 
