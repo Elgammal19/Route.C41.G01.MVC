@@ -21,6 +21,17 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            // Binding --> 1. Through Model [From , RoutedData , QuerySigment , File]
+            //         --> 2. Through View's Dictionary [ViewData , ViewBag] --> Transfer Data from Action to View[OneWay]
+
+            // ViewData
+            // Tyep determined in compilation time so it's more faster than ViewBag
+            ViewData["Message"] = "Hello ViewData";
+
+            // ViewBag
+            // Tyep determined in run time so it's more Slower than ViewData
+            ViewBag.Message = "Hello ViewBag";
+
             var emp = _empRepo.GetAll();
             return View(emp);
         }
