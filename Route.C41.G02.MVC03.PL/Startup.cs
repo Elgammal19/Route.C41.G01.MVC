@@ -34,7 +34,8 @@ namespace Route.C41.G02.MVC03.PL
             // CLR will create an object from "ApplicationDbContext" each time user need this object at the same request
             //services.AddTransient<ApplicationDbContext>();
 
-            // CLR will create an object from "ApplicationDbContext" & store it in heap as long as user is still in the same request 
+            // CLR will create an object from "ApplicationDbContext" & store it in heap as long as user is still in the same request
+            // & After reequest end object will be unreachable
             //services.AddScoped<ApplicationDbContext>();
             //services.AddScoped<DbContextOptions<ApplicationDbContext>>();
 
