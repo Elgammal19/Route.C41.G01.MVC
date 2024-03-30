@@ -26,7 +26,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
         public IActionResult Index()
         {
-            var department = _unitOfWork.DepartmentRepository.GetAll();
+            var department = _unitOfWork.Repository<Department>().GetAll();
             return View(department);
         }
 
@@ -41,7 +41,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         {
             if(ModelState.IsValid) // Server side validation
             {
-                 _unitOfWork.DepartmentRepository.Add(department);
+                 _unitOfWork.Repository<Department>().Add(department);
                 var count = _unitOfWork.Complete();
                 if (count > 0)  
                     return RedirectToAction("Index");
@@ -54,7 +54,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             if (!id.HasValue)
                 return BadRequest(); // 400
 
-            var dept = _unitOfWork.DepartmentRepository.Get(id.Value);
+            var dept = _unitOfWork.Repository<Department>().Get(id.Value);
 
             if (dept is null)
                 return NotFound();  // 404 
@@ -87,7 +87,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
             try
             {
-                _unitOfWork.DepartmentRepository.Update(department);
+                _unitOfWork.Repository<Department>().Update(department);
                 _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
@@ -116,7 +116,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         [HttpPost]
         public IActionResult Delete(Department department)
         {
-            _unitOfWork.DepartmentRepository.Delete(department);
+            _unitOfWork.Repository<Department>().Delete(department);
             _unitOfWork.Complete();
             return RedirectToAction("Index");
         }

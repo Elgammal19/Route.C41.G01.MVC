@@ -11,7 +11,7 @@ namespace Route.C41.G02.BLL.Interfaces
     {
         // IEnumerable to use any collection that implement this interface to iterate on collection to dispaly records in table
         IEnumerable<T> GetAll();
-
+       
         T Get(int id);
 
         // Retrun type "int" to know the number of records that affected in DB
