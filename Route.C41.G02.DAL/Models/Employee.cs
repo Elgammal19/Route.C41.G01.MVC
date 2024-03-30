@@ -33,25 +33,12 @@ namespace Route.C41.G02.DAL.Models
 
         [Required]
         public string Name { get; set; }
-
-        [Range(22,30)]
         public int Age { get; set; }
-
         public string Address { get; set; }
-
-        [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
-
-        [Display(Name ="Is Active")]
         public bool IsActive { get; set; }
-
-        [EmailAddress]
         public string Email { get; set; }
-
-        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
-
-        [Display(Name = "Hiring Date")]
         public DateTime HiringDate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; } = false;
