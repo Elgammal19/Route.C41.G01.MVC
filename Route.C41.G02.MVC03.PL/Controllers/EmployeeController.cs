@@ -20,8 +20,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             _env = env;
         }
 
-        [HttpGet]
-        public IActionResult Index()
+        //[HttpGet]
+        public IActionResult Index(string searchInp)
         {
             // Binding --> 1. Through Model [From , RoutedData , QuerySigment , File]
             //         --> 2. Through View's Dictionary [ViewData , ViewBag] --> Transfer Data from Action to View[OneWay]
@@ -34,8 +34,16 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             // Tyep determined in run time so it's more Slower than ViewData
             ViewBag.Message = "Hello ViewBag";
 
-            var emp = _empRepo.GetAll();
-            return View(emp);
+            if (string.IsNullOrEmpty(searchInp))
+            {
+                var emp = _empRepo.GetAll();
+                return View(emp);
+            }
+            else
+            {
+                var emp = _empRepo.GetEmployeesByName(searchInp);
+                return View(emp);
+            }
         }
 
         [HttpGet]
