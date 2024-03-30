@@ -15,12 +15,12 @@ namespace Route.C41.G02.BLL.Interfaces
         T Get(int id);
 
         // Retrun type "int" to know the number of records that affected in DB
-        int Add(T record);
+        void Add(T record);
 
         // Retrun type "int" to know the number of records that updated in DB
-        int Update(T record);
+        void Update(T record);
 
         // Retrun type "int" to know the number of records that deleted from DB
-        int Delete(T record);
+        void Delete(T record);
     }
 }

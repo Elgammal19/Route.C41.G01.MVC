@@ -13,14 +13,22 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _empRepo;
+        private readonly IUnitOfWork _unitOfWork;
+
+        //private readonly IEmployeeRepository _empRepo;
         //private readonly IDepartmentRepository _departmentRepo;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository employee/*, IDepartmentRepository department */,IWebHostEnvironment env, IMapper mapper)
+
+        /// Cons Of Generic Repository Design Pattern :
+        /// 1. If we have an action in the controller require a specific service but other actions in the controller doesn't require it
+        /// 2. After the injection of this service for this action we will save changes after each injection for each service
+        ///    [Beacuse controller doesn't communicate directly with DbContext(Controller --> Repository --> DbContext)]
+        public EmployeeController(IUnitOfWork unitOfWork,/*IEmployeeRepository employee*//*, IDepartmentRepository department */IWebHostEnvironment env, IMapper mapper)
         {
-            _empRepo = employee;
+            //_empRepo = employee;
+            _unitOfWork = unitOfWork;
             //_departmentRepo = department;
             _env = env;
             _mapper = mapper;
@@ -43,9 +51,9 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             var employees = Enumerable.Empty<Employee>();
 
             if (string.IsNullOrEmpty(searchInp))
-                employees = _empRepo.GetAll();
+                employees = _unitOfWork.EmployeeRepository.GetAll();
             else
-                employees = _empRepo.GetEmployeesByName(searchInp);
+                employees = _unitOfWork.EmployeeRepository.GetEmployeesByName(searchInp);
 
             var MappedEmp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
             return View(MappedEmp);
@@ -55,6 +63,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         public IActionResult Create()
         {
             //ViewBag["Departments"] = _departmentRepo.GetAll();
+            //ViewBag.UnitOfWork = _unitOfWork;
 
             return View();
         }
@@ -81,10 +90,20 @@ namespace Route.C41.G02.MVC03.PL.Controllers
                 // AutoMapper
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
 
-                var count = _empRepo.Add(MappedEmp);
+                /*var count =*/ _unitOfWork.EmployeeRepository.Add(MappedEmp);
 
                 // 3. TempData --> Dictionary Type
                 // To Transfer Data Between 2 Consecutive Requestrs
+
+                // Update Department
+                // _unitOfWork.DepartmentRepository.Update(department
+
+                // Delete Project
+                // _unitOfWork.ProjectRepository.Delete(project);
+
+                // Save.Changes();
+
+                var count = _unitOfWork.Complete();
 
                 if (count > 0)
                      TempData["Message"] = "Department Is Created Successfully"; 
@@ -103,7 +122,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             if (!id.HasValue)
                 return BadRequest();
 
-            var emp = _empRepo.Get(id.Value);
+            var emp = _unitOfWork.EmployeeRepository.Get(id.Value);
             var MappedEmp = _mapper.Map<Employee, EmployeeViewModel>(emp);
 
             if (emp is null)
@@ -132,7 +151,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             try
             {
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
-                _empRepo.Update(MappedEmp);
+                _unitOfWork.EmployeeRepository.Update(MappedEmp);
+                _unitOfWork.Complete();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -163,7 +183,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         public IActionResult Delete(EmployeeViewModel employee)
         {
             var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
-            _empRepo.Delete(MappedEmp);
+            _unitOfWork.EmployeeRepository.Delete(MappedEmp);
+            _unitOfWork.Complete();
             return RedirectToAction("Index");
         }
     }

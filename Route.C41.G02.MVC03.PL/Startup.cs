@@ -10,6 +10,7 @@ using Route.C41.G02.BLL.Interfaces;
 using Route.C41.G02.BLL.Repositories;
 using Route.C41.G02.DAL.Data;
 using Route.C41.G02.DAL.Helpers;
+using Route.C41.G02.MVC03.PL.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,13 +33,13 @@ namespace Route.C41.G02.MVC03.PL
         {
             services.AddControllersWithViews();// Register built-in services reqiured by MVC
 
-            // CLR will create an object from "ApplicationDbContext" each time user need this object at the same request
-            //services.AddTransient<ApplicationDbContext>();
+            /// CLR will create an object from "ApplicationDbContext" each time user need this object at the same request
+            ///services.AddTransient<ApplicationDbContext>();
 
-            // CLR will create an object from "ApplicationDbContext" & store it in heap as long as user is still in the same request
-            // & After reequest end object will be unreachable
-            //services.AddScoped<ApplicationDbContext>();
-            //services.AddScoped<DbContextOptions<ApplicationDbContext>>();
+            /// CLR will create an object from "ApplicationDbContext" & store it in heap as long as user is still in the same request
+            /// & After reequest end object will be unreachable
+            ///services.AddScoped<ApplicationDbContext>();
+            ///services.AddScoped<DbContextOptions<ApplicationDbContext>>();
 
             // This CoonnectionString is n't valid --> 1. Plain Text   2. Because CoonnectionString is changing from enviroment to another
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -46,8 +47,9 @@ namespace Route.C41.G02.MVC03.PL
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddApplicationServices();
 
             // CLR will craete an object from 'ApplicationDbContext' and store this object in heap as long as user open a session with server
             //services.AddSingleton<ApplicationDbContext>();

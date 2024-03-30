@@ -10,7 +10,7 @@ namespace Route.C41.G02.DAL.Models
     // Model
     public class Department :ModelBase
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         [Required(ErrorMessage ="Code Is Required")]
         public string Code { get; set; }

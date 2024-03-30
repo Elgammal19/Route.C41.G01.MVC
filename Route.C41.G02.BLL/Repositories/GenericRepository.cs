@@ -19,22 +19,22 @@ namespace Route.C41.G02.BLL.Repositories
             _dbContext = dbContext;
         }
 
-        public int Add(T record)
+        public void Add(T record)
         {
             _dbContext.Set<T>().Add(record);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
         }
 
-        public int Update(T record)
+        public void Update(T record)
         {
             _dbContext.Set<T>().Update(record);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
         }
 
-        public int Delete(T record)
+        public void Delete(T record)
         {
             _dbContext.Set<T>().Remove(record);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
         }
 
         public T Get(int id)
