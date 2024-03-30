@@ -58,5 +58,9 @@ namespace Route.C41.G02.DAL.Models
         public Gander Gander { get; set; }
         public EmpType EmployeeType { get; set; }
 
+        public int? DepartmentId { get; set; } // Foreign Key
+
+        public Department Department { get; set; } //  Navigational Property [One]
+
     }
 }
