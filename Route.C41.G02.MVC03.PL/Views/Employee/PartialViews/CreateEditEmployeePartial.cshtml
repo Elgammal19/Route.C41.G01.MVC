@@ -1,7 +1,10 @@
 ﻿@model Employee
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@inject IDepartmentRepository _departmentRepo
+
+@{
+    var departments = new SelectList(_departmentRepo.GetAll(), nameof(Department.Id), nameof(Department.Name));
+}
+
 <div class="form-group">
     <label class="col-form-label" asp-for="Name"></label>
     <input class="form-control" asp-for="Name" />
@@ -35,4 +38,10 @@
 <div class="form-group">
     <label class="form-check-input" asp-for="IsActive"></label>
     <input class="col-form-label" asp-for="IsActive" />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Department"></label>
+    <select class="form-control"  asp-for="DepartmentId" asp-items="@departments"> 
+        <option value="@null"> -- Select Department -- </option>
+    </select>
 </div>

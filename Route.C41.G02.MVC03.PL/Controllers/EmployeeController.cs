@@ -10,11 +10,13 @@ namespace Route.C41.G02.MVC03.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _empRepo;
+        //private readonly IDepartmentRepository _departmentRepo;
         private readonly IWebHostEnvironment _env;
 
-        public EmployeeController(IEmployeeRepository employee, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeRepository employee/*, IDepartmentRepository department */,IWebHostEnvironment env)
         {
             _empRepo = employee;
+            //_departmentRepo = department;
             _env = env;
         }
 
@@ -39,6 +41,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            //ViewBag["Departments"] = _departmentRepo.GetAll();
+
             return View();
         }
 
@@ -78,6 +82,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id) 
         {
+            //ViewBag["Departments"] = _departmentRepo.GetAll();
+
             return Details(id,"Edit");
         }
 
