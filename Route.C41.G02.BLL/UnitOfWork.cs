@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G02.BLL
 {
-    internal class UnitOfWork : IUnitOfWork 
+    public class UnitOfWork : IUnitOfWork 
     {
         // UnitOfWork --> Representation for DbContext 
         // UnitOfWork --> Responseable for communicate with DbContext through DbContext injection 
