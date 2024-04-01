@@ -61,6 +61,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
                 employees = empRepo.GetEmployeesByName(searchInp);
 
             var MappedEmp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
+
             return View(MappedEmp);
         }
 
@@ -139,6 +140,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
             if (emp is null)
                 return NotFound();
+            if(ViewName.Equals("Delete" , StringComparison.OrdinalIgnoreCase))
+                TempData["ImageName"] = emp.ImageName;
 
             return View(ViewName , MappedEmp);
         }
@@ -162,6 +165,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
             try
             {
+                //employee.ImageName = DocumentSettings.UploadeFile(employee.Image, "images");
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
                 _unitOfWork.Repository<Employee>().Update(MappedEmp);
                 _unitOfWork.Complete();
@@ -194,10 +198,17 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         [HttpPost]
         public IActionResult Delete(EmployeeViewModel employee)
         {
+            employee.ImageName = TempData["ImageName"] as string ;
+
             var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
             _unitOfWork.Repository<Employee>().Delete(MappedEmp);
-            _unitOfWork.Complete();
-            return RedirectToAction("Index");
+            var count = _unitOfWork.Complete();
+            if(count > 0)
+            {
+                DocumentSettings.DeleteFile(employee.ImageName, "images");
+                return RedirectToAction("Index");
+            }
+            return View(employee) ;
         }
     }
 }
