@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Route.C41.G02.MVC03.PL.ViewModels
 {
@@ -37,6 +38,8 @@ namespace Route.C41.G02.MVC03.PL.ViewModels
 
         public Gander Gander { get; set; }
         public EmpType EmployeeType { get; set; }
+        public IFormFile Image { get; set; }
+        public string ImageName { get; set; }
 
         public int? DepartmentId { get; set; } // Foreign Key
 

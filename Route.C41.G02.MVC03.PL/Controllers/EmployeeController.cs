@@ -5,10 +5,12 @@ using Microsoft.Extensions.Hosting;
 using Route.C41.G02.BLL.Interfaces;
 using Route.C41.G02.BLL.Repositories;
 using Route.C41.G02.DAL.Models;
+using Route.C41.G02.MVC03.PL.Helpers;
 using Route.C41.G02.MVC03.PL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Route.C41.G02.MVC03.PL.Controllers
 {
@@ -76,6 +78,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         { 
             if (ModelState.IsValid)
             {
+                employee.ImageName = DocumentSettings.UploadeFile(employee.Image, "images");
+
                 // Manual Mapping
                 ///var MappedEmp = new Employee
                 ///{
@@ -93,6 +97,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
                 // AutoMapper
                 var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
 
+                //MappedEmp.ImageName = fileName;
+
                 /*var count =*/ _unitOfWork.Repository<Employee>().Add(MappedEmp);
 
                 // 3. TempData --> Dictionary Type
@@ -109,7 +115,10 @@ namespace Route.C41.G02.MVC03.PL.Controllers
                 var count = _unitOfWork.Complete();
 
                 if (count > 0)
-                     TempData["Message"] = "Department Is Created Successfully"; 
+                {
+                    
+                    TempData["Message"] = "Department Is Created Successfully";
+                }
                 else
                     TempData["Message"] = "An Error Has Occured , Department Is n't Created ";
                 return RedirectToAction("Index");

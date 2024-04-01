@@ -16,7 +16,7 @@ namespace Route.C41.G02.MVC03.PL.Helpers
             // 1. Get The Located Folder Path :
             // string FolderPath = $"C:\\Users\\Mohamed Elgammal\\source\\repos\\Projects\\Route\\ASP.NET Core\\ASP.NET Core MVC\\Route.C41.G02.MVC03\\Route.C41.G02.MVC03.PL\\wwwroot\files\\{folderName}";  --> Path will changed when --> Enviroment Changed
             // string FolderPath = $"{Directory.GetCurrentDirectory()}\\wwwroot\files\\{folderName}";   --> May be messing a '\' so the path will be wrong
-            string FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "\\wwwroot\files\\", folderName);  // Combine Function --> Combine the Path parts & create path
+            string FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\files", folderName);  // Combine Function --> Combine the Path parts & create path
 
             // Validate If directory exist or n't & if it does n't exit --> craete path 
             if (!Directory.Exists(folderName))

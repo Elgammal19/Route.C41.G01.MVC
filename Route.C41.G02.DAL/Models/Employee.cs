@@ -44,6 +44,7 @@ namespace Route.C41.G02.DAL.Models
         public bool IsDeleted { get; set; } = false;
         public Gander Gander { get; set; }
         public EmpType EmployeeType { get; set; }
+        public string ImageName { get; set; }
 
         public int? DepartmentId { get; set; } // Foreign Key
 
