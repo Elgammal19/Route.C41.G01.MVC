@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Net.WebRequestMethods.File;
 
@@ -11,7 +12,7 @@ namespace Route.C41.G02.MVC03.PL.Helpers
         // File Settings  : Uploud & Download static files || Ducoments --> On server(Server Side) / In The Application(Client Side)
         //                  1. On Server --> 1.1 Create File Location On The Server ,  1.2 Uploade data of the file in the location of the file on server by streaming(Data Per Time)   
     
-        public static string UploadeFile(IFormFile file , string folderName)
+        public static async Task<string> UploadeFile(IFormFile file , string folderName)
         {
             // 1. Get The Located Folder Path :
             // string FolderPath = $"C:\\Users\\Mohamed Elgammal\\source\\repos\\Projects\\Route\\ASP.NET Core\\ASP.NET Core MVC\\Route.C41.G02.MVC03\\Route.C41.G02.MVC03.PL\\wwwroot\files\\{folderName}";  --> Path will changed when --> Enviroment Changed
@@ -32,7 +33,7 @@ namespace Route.C41.G02.MVC03.PL.Helpers
             // 4. Save File As Stream[Data Per Time]
             using var fileStream = new FileStream(filePath, FileMode.Create);
 
-            file.CopyTo(fileStream);
+           await file.CopyToAsync(fileStream);
 
             return fileName;
         

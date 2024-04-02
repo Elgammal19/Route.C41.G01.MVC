@@ -51,14 +51,14 @@ namespace Route.C41.G02.BLL
             return _Repositories[key] as IGenericRepository<T>;
         }
 
-        public int Complete()
+        public async Task<int> Complete()
         {
-            return _applicationDb.SaveChanges();
+            return await _applicationDb.SaveChangesAsync();
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            _applicationDb.Dispose();
+           await _applicationDb.DisposeAsync();
         }
 
        
