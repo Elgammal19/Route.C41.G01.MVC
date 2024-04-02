@@ -1,6 +1,7 @@
  using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using Route.C41.G02.BLL.Interfaces;
 using Route.C41.G02.BLL.Repositories;
 using Route.C41.G02.DAL.Data;
 using Route.C41.G02.DAL.Helpers;
+using Route.C41.G02.DAL.Models;
 using Route.C41.G02.MVC03.PL.Helpers;
 using System;
 using System.Collections.Generic;
@@ -56,7 +58,30 @@ namespace Route.C41.G02.MVC03.PL
 
             services.AddAutoMapper(M=> M.AddProfile(new MappingProfiles()));
 
-        }
+            //services.AddScoped<UserManager<ApplicationUser>>();
+            //services.AddScoped<SignInManager<ApplicationUser>>();
+            //services.AddScoped<RoleManager<IdentityRole>>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options=>
+            {
+                options.Password.RequiredUniqueChars = 2;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+
+                options.Lockout.AllowedForNewUsers= true;
+                options.Lockout.MaxFailedAccessAttempts= 5;
+                options.Lockout.DefaultLockoutTimeSpan= TimeSpan.FromMinutes(5);    
+
+                options.User.RequireUniqueEmail = true; 
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+           
+
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
