@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Route.C41.G02.DAL.Data.Configurations;
 using Route.C41.G02.DAL.Models;
 using System;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Route.C41.G02.DAL.Data
 {
-    public class ApplicationDbContext :DbContext
+    public class ApplicationDbContext :IdentityDbContext
     {
         // constructor injection
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
@@ -25,11 +27,18 @@ namespace Route.C41.G02.DAL.Data
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        //public DbSet<IdentityUser> Users { get; set; }
+        //public DbSet<IdentityRole> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.ApplyConfiguration<Department>(new DepartmentConfigurations());
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUser>().ToTable("Users");  
         }
 
     }
