@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Route.C41.G02.DAL.Models;
-using Route.C41.G02.MVC03.PL.ViewModels.User;
+using Route.C41.G02.MVC03.PL.ViewModels.Account;
 using System.Threading.Tasks;
 
 namespace Route.C41.G02.MVC03.PL.Controllers
@@ -60,14 +60,47 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 			return View(model);
 		}
 
-		#endregion
+        #endregion
 
 
-		#region Sign In
+        #region Sign In
 
+        [HttpGet]
         public IActionResult SignIn()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var User = await _userManager.FindByEmailAsync(model.Email);
+
+                if(User is not null)
+                {
+                    var flag = await _userManager.CheckPasswordAsync(User, model.Password);
+
+                    if (flag) 
+                    { 
+                        var result = await _signInManager.PasswordSignInAsync(User, model.Password , model.RememberMe ,false);
+
+						if (result.IsNotAllowed)
+							ModelState.AddModelError(string.Empty, "Your Email n't confirmed yet !!");
+
+						if (result.IsLockedOut)
+							ModelState.AddModelError(string.Empty, "Your Email is locked !!");
+
+						if (result.Succeeded)
+                            return RedirectToAction(nameof(HomeController.Index) , "Home");
+
+                        
+                    }
+                }
+                ModelState.AddModelError(string.Empty, "Invalid Login");
+            }
+            return View(model); 
         }
 
 		#endregion

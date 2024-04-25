@@ -79,7 +79,7 @@ namespace Route.C41.G02.MVC03.PL
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-           
+           services.AddAuthentication();
 
 		}
 
