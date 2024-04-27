@@ -8,8 +8,9 @@ namespace Route.C41.G02.DAL.Models
 {
 	public class Email
 	{
-        public string Recipients { get; set; }
-        public string Subject { get; set; }
-        public string Body { get; set; }
-    }
+		public string Recipients { get; set; }
+		public string Subject { get; set; }
+		public string Body { get; set; }
+
+	}
 }

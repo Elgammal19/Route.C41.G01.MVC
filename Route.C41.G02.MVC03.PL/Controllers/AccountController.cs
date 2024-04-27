@@ -111,28 +111,28 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         #region Sign Out
 
         [HttpGet]
-        public new async Task<IActionResult> SignOut() // new --> To hide & override inherited implementation
+        public new IActionResult SignOut() // new --> To hide & override inherited implementation
         {
-            await _signInManager.SignOutAsync();
+            _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(SignIn));
         }
 
-        #endregion
+		#endregion
 
-        #region Forget Password
+		#region Forget Password
 
-        [HttpGet]
-        public IActionResult ForgetPassword()
-        {
-            return View();
-        }
+		[HttpGet]
+		public IActionResult ForgetPassword()
+		{
+			return View();
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> SendResetPasswordUrl(ForgetPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
+		[HttpPost]
+		public async Task<IActionResult> SendResetPasswordUrl(ForgetPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
 				// Check email is found 
 				var user = await _userManager.FindByEmailAsync(model.Email);
 
@@ -142,7 +142,7 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 					var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
 					// 2. Create Url
-					var url = Url.Action("ResetPassword", "Account", new { email = model.Email,Token = token }, Request.Scheme);
+					var url = Url.Action("ResetPassword", "Account", new { email = model.Email, Token = token }, Request.Scheme);
 
 					// 3. Create Email 
 					var email = new Email()
@@ -156,17 +156,17 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 					EmailSettings.SendEmail(email);
 
 					// 5. Redirect To Action
-					 return RedirectToAction(nameof(CheckYourInbox));
+					return RedirectToAction(nameof(CheckYourInbox));
 				}
 				ModelState.AddModelError(string.Empty, "Invalid Email");
-            }
-            return View(nameof(ForgetPassword),model);
-        }
+			}
+			return View(nameof(ForgetPassword), model);
+		}
 
-        public IActionResult CheckYourInbox()
-        {
-            return View();
-        }
+		public IActionResult CheckYourInbox()
+		{
+			return View();
+		}
 
 		#endregion
 
