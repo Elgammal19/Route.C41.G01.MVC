@@ -28,33 +28,36 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         [HttpPost]
 		public async Task<IActionResult> SignUp(SignUpViewModel model)
 		{
-
             if(ModelState.IsValid)
             {
                 var User = await _userManager.FindByNameAsync(model.Username);
 
-                if (User == null)
+                if (User is null)
                 {
-                    User = new ApplicationUser()
+                    User = await _userManager.FindByEmailAsync(model.Email);
+
+                    if(User is null)
                     {
-                        FName = model.FirstName,
-                        LName = model.LastName,
-                        UserName = model.Username,
-                        Email = model.Email,
-                        IsAgree = model.IsAgree,
-                    };
+						User = new ApplicationUser()
+						{
+							FName = model.FirstName,
+							LName = model.LastName,
+							UserName = model.Username,
+							Email = model.Email,
+							IsAgree = model.IsAgree,
+						};
 
-                   var Result= await _userManager.CreateAsync(User , model.Password);
+						var Result = await _userManager.CreateAsync(User, model.Password);
 
-                    if (Result.Succeeded)
-                        return RedirectToAction(nameof(SignIn));
+						if (Result.Succeeded)
+							return RedirectToAction(nameof(SignIn));
 
-                    foreach (var error in Result.Errors)
-                        ModelState.AddModelError(string.Empty, error.Description);
-
+						foreach (var error in Result.Errors)
+							ModelState.AddModelError(string.Empty, error.Description);
+					}
                 }
 
-                ModelState.AddModelError(string.Empty, "This Username Is Already In Use For Another Account");
+                ModelState.AddModelError(string.Empty, "This User Is Already In Use For Another Account");
 
 			}
 			return View(model);

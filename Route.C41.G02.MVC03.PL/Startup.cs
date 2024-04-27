@@ -79,7 +79,13 @@ namespace Route.C41.G02.MVC03.PL
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-           services.AddAuthentication();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/SignIn";
+                options.AccessDeniedPath = "/Home/Error";
+            });
+
+           //services.AddAuthentication();
 
 		}
 
@@ -96,10 +102,14 @@ namespace Route.C41.G02.MVC03.PL
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

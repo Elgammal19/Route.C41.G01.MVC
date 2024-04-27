@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Route.C41.G02.BLL.Interfaces;
@@ -12,6 +13,8 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 {
     // Inheritance : DepartmentController : Is a Controller
     // Association[Composition] : DepartmentController : Has a DepartmentRepository
+
+    [Authorize]
     public class DepartmentController : Controller
     {
         //private readonly IDepartmentRepository _departmentRepo;
