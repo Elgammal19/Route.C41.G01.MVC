@@ -77,7 +77,9 @@ namespace Route.C41.G02.MVC03.PL
 
                 options.User.RequireUniqueEmail = true; 
 
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options =>
             {

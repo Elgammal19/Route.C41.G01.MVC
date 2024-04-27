@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Route.C41.G02.DAL.Models;
+using Route.C41.G02.MVC03.PL.Helpers;
 using Route.C41.G02.MVC03.PL.ViewModels.Account;
 using System.Threading.Tasks;
 
@@ -110,11 +111,61 @@ namespace Route.C41.G02.MVC03.PL.Controllers
         #region Sign Out
 
         [HttpGet]
-        public new IActionResult SignOut() // new --> To hide & override inherited implementation
+        public new async Task<IActionResult> SignOut() // new --> To hide & override inherited implementation
         {
-            _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
 
             return RedirectToAction(nameof(SignIn));
+        }
+
+        #endregion
+
+        #region Forget Password
+
+        [HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendResetPasswordUrl(ForgetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+				// Check email is found 
+				var user = await _userManager.FindByEmailAsync(model.Email);
+
+				if (user is not null)
+				{
+					// 1. Generate Token
+					var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+					// 2. Create Url
+					var url = Url.Action("ResetPassword", "Account", new { email = model.Email,Token = token }, Request.Scheme);
+
+					// 3. Create Email 
+					var email = new Email()
+					{
+						Recipients = model.Email,
+						Subject = "Reset Your Password",
+						Body = url
+					};
+
+					// 4. Send Email
+					EmailSettings.SendEmail(email);
+
+					// 5. Redirect To Action
+					 return RedirectToAction(nameof(CheckYourInbox));
+				}
+				ModelState.AddModelError(string.Empty, "Invalid Email");
+            }
+            return View(nameof(ForgetPassword),model);
+        }
+
+        public IActionResult CheckYourInbox()
+        {
+            return View();
         }
 
 		#endregion
