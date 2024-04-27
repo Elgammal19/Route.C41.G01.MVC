@@ -120,7 +120,6 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
                 if (count > 0)
                 {
-                    
                     TempData["Message"] = "Department Is Created Successfully";
                 }
                 else
@@ -159,35 +158,96 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromRoute] int id,EmployeeViewModel employee)
+        public async Task<IActionResult> Edit([FromRoute] int id, EmployeeViewModel employee)
         {
             if (id != employee.Id)
                 return BadRequest(); //400
+
             if (!ModelState.IsValid)
                 return View(employee);
 
             try
             {
-                //employee.ImageName = DocumentSettings.UploadeFile(employee.Image, "images");
-                var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
-                _unitOfWork.Repository<Employee>().Update(MappedEmp);
-                await _unitOfWork.Complete();
+                employee.ImageName = await DocumentSettings.UploadeFile(employee.Image, "Images");
+                var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
 
-                return RedirectToAction(nameof(Index));
+                _unitOfWork.Repository<Employee>().Update(mappedEmp);
+                var count = await _unitOfWork.Complete();
+                if (count > 0)
+                {
+                    DocumentSettings.DeleteFile(TempData["ImageName"] as string, "Images");
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    DocumentSettings.DeleteFile(employee.ImageName, "Images");
+                }
+                return View(employee);
             }
             catch (Exception ex)
             {
-                // Log Exeption
-                // Friendly Message
+                // 1. Log Exception
+                // 2. Friendly Message
+
                 if (_env.IsDevelopment())
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "An Error Has Occured During Updating Department");
+                    ModelState.AddModelError(string.Empty, "An Error Has Occured During Updating the Employee");
                 }
+
+
+                ///if(employee.ImageName is not null)
+                ///{
+                ///     DocumentSettings.DeleteFile(employee.ImageName, "images");
+                ///}
+
+                //employee.ImageName = await DocumentSettings.UploadeFile(employee.Image, "images");
+
+                //var result = _mapper.Map<Employee>(employee);
+
+                // _unitOfWork.Repository<Employee>().Update(result);
+
+                //var count = await _unitOfWork.Complete();
+
+                ///if(count > 0)
+                ///{
+                ///    return RedirectToAction(nameof(Index));
+                ///}
+
+
+                ///try
+                ///{
+                ///
+                ///    var MappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employee);
+                ///
+                ///    _unitOfWork.Repository<Employee>().Update(MappedEmp);
+                ///
+                ///    await _unitOfWork.Complete();
+                ///
+                ///    int count = _unitOfWork.Complete();
+                ///    if()
+                ///
+                ///    return RedirectToAction(nameof(Index));
+                ///}
+
+                ///catch (Exception ex)
+                ///{
+                ///    // Log Exeption
+                ///    // Friendly Message
+                ///    if (_env.IsDevelopment())
+                ///    {
+                ///        ModelState.AddModelError(string.Empty, ex.Message);
+                ///    }
+                ///    else
+                ///    {
+                ///        ModelState.AddModelError(string.Empty, "An Error Has Occured During Updating Department");
+                ///    }
+
                 return View(employee);
+
             }
         }
 

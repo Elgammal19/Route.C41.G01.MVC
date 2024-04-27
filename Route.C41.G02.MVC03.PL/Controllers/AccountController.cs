@@ -170,46 +170,46 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
 		#endregion
 
-		//#region Reset Password
+		#region Reset Password
 
-		//[HttpGet]
-		//public IActionResult ResetPassword(string email , string token)
-		//{
-		//	TempData["email"] = email;
-		//	TempData["token"] = token;
+		[HttpGet]
+		public IActionResult ResetPassword(string email, string token)
+		{
+			TempData["email"] = email;
+			TempData["token"] = token;
 
-		//	return View();
-		//}
+			return View();
+		}
 
-		//[HttpPost]
-		//public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		var email = TempData["email"] as string;
-		//		var token = TempData["token"] as string;
-				 
-		//		var user = await _userManager.FindByEmailAsync(email);
+		[HttpPost]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var email = TempData["email"] as string;
+				var token = TempData["token"] as string;
 
-		//		if(user is not null)
-		//		{
-		//			var result = await _userManager.ResetPasswordAsync(user,token ,model.NewPassword);
+				var user = await _userManager.FindByEmailAsync(email);
 
-		//			if (result.Succeeded)
-		//			{
-		//				return RedirectToAction(nameof(SignIn));
-		//			}
-		//			foreach (var error in result.Errors)
-		//			{
-		//				ModelState.AddModelError(string.Empty, error.Description);
-		//			}
-		//		}
-		//		ModelState.AddModelError(string.Empty, "Invalid Reset Password !");
-		//	}
-		//	return View(model);
-		//}
+				if (user is not null)
+				{
+					var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
 
-		//#endregion
+					if (result.Succeeded)
+					{
+						return RedirectToAction(nameof(SignIn));
+					}
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError(string.Empty, error.Description);
+					}
+				}
+				ModelState.AddModelError(string.Empty, "Invalid Reset Password !");
+			}
+			return View(model);
+		}
+
+		#endregion
 
 
 	}
