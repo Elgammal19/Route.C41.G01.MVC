@@ -65,7 +65,6 @@ namespace Route.C41.G02.MVC03.PL.Controllers
 
         #endregion
 
-
         #region Sign In
 
         [HttpGet]
@@ -106,6 +105,20 @@ namespace Route.C41.G02.MVC03.PL.Controllers
             return View(model); 
         }
 
+        #endregion
+
+        #region Sign Out
+
+        [HttpGet]
+        public new IActionResult SignOut() // new --> To hide & override inherited implementation
+        {
+            _signInManager.SignOutAsync();
+
+            return RedirectToAction(nameof(SignIn));
+        }
+
 		#endregion
+
+
 	}
 }
